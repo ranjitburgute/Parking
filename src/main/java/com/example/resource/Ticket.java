@@ -1,15 +1,16 @@
-package com.example.ticket;
+package com.example.resource;
 
 import java.util.Date;
 
 public class Ticket {
 
+    private final String vehicleType;
     private final int tickerNr;
     private final int spotNr;
     private final Date entryTime;
-    private final String vehicleType;
-    private long fee;
+    private int receiptNr;
     private Date exitTime;
+    private long fee;
 
     public Ticket(int tickerNr, int spotNr, Date entryTime, String vehicleType) {
         this.tickerNr = tickerNr;
@@ -18,8 +19,27 @@ public class Ticket {
         this.vehicleType = vehicleType;
     }
 
-    public int getSpotNr() {
-        return spotNr;
+    public void setReceiptNr(int receiptNr) {
+        this.receiptNr = receiptNr;
+    }
+
+    public String printTicket() {
+        return "Ticket{" +
+                "tickerNr=" + tickerNr +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", spotNr=" + spotNr +
+                ", entryTime=" + entryTime +
+                '}';
+    }
+
+    public String printReceipt() {
+        return "Receipt{" +
+                "receiptNr=R-" + receiptNr +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", fee=" + fee +
+                ", entryTime=" + entryTime +
+                ", exitTime=" + exitTime +
+                '}';
     }
 
     public String getVehicleType() {
@@ -49,7 +69,5 @@ public class Ticket {
     public Date getEntryTime() {
         return entryTime;
     }
-
-
 }
 

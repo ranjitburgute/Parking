@@ -1,11 +1,15 @@
 package com.example.parking;
 
+import com.example.resource.Spot;
+import com.example.utils.Constants;
+
 public class Mall extends Parking {
 
     public Mall(int totalSpotsBike, int totalSpotsCar, int totalSpotsBus) {
-        super.totalSpotsBike = totalSpotsBike;
-        super.totalSpotsCar = totalSpotsCar;
-        super.totalSpotsBus = totalSpotsBus;
+
+        availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
+        availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
+        availableSpots.put(Constants.BUS, new Spot(totalSpotsBus));
     }
 
     public boolean isVehicleAllowed(String vehicle) {
@@ -13,7 +17,7 @@ public class Mall extends Parking {
         return supported.contains(vehicle);
     }
 
-    public long getFee(String vehicleType, long time) {
+    public long calculateFee(String vehicleType, long time) {
         int rate = 0;
         long fee = 0;
         if (Constants.BIKE.equalsIgnoreCase(vehicleType)) {

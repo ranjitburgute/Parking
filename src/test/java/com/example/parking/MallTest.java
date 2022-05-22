@@ -1,6 +1,7 @@
 package com.example.parking;
 
-import com.example.ticket.Ticket;
+import com.example.resource.Ticket;
+import com.example.utils.Constants;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -21,22 +22,23 @@ public class MallTest {
 
         Mall mall = new Mall(2, 0, 0);
 
-        Ticket ticket1 = mall.parkVehicle(Parking.Constants.BIKE);
+        System.out.println("=================== Mall 1 ==============================");
+        Ticket ticket1 = mall.parkVehicle(Constants.BIKE);
         Date ticket1Entry = ticket1.getEntryTime();
 
-        Ticket ticket2 = mall.parkVehicle(Parking.Constants.BIKE);
+        Ticket ticket2 = mall.parkVehicle(Constants.BIKE);
         Date ticket2Entry = ticket2.getEntryTime();
 
-        Ticket ticket3 = mall.parkVehicle(Parking.Constants.BIKE);
+        Ticket ticket3 = mall.parkVehicle(Constants.BIKE);
 
-        ticket2.setExitTime(new Date(ticket2Entry.getTime() + Parking.Constants.HOUR));
+        ticket2.setExitTime(new Date(ticket2Entry.getTime() + Constants.HOUR));
         mall.exitVehicle(ticket2.getTickerNr());
         assertEquals(10, ticket2.getFee());
 
-        Ticket ticket4 = mall.parkVehicle(Parking.Constants.BIKE);
+        Ticket ticket4 = mall.parkVehicle(Constants.BIKE);
         Date ticket4Entry = ticket4.getEntryTime();
 
-        ticket1.setExitTime(new Date(ticket1Entry.getTime() + 4 * Parking.Constants.HOUR));
+        ticket1.setExitTime(new Date(ticket1Entry.getTime() + 4 * Constants.HOUR));
         mall.exitVehicle(ticket1.getTickerNr());
         assertEquals(40, ticket1.getFee());
     }
@@ -51,21 +53,22 @@ public class MallTest {
 
         Mall mall = new Mall(100, 80, 10);
 
-        Ticket ticket1 = mall.parkVehicle(Parking.Constants.BIKE);
+        System.out.println("==================== Mall 2 =============================");
+        Ticket ticket1 = mall.parkVehicle(Constants.BIKE);
         Date ticket1Entry = ticket1.getEntryTime();
-        ticket1.setExitTime(new Date(ticket1Entry.getTime() + 3 * Parking.Constants.HOUR + 30 * Parking.Constants.MIN));
+        ticket1.setExitTime(new Date(ticket1Entry.getTime() + 3 * Constants.HOUR + 30 * Constants.MIN));
         mall.exitVehicle(ticket1.getTickerNr());
         assertEquals(40, ticket1.getFee());
 
-        Ticket ticket2 = mall.parkVehicle(Parking.Constants.CAR);
+        Ticket ticket2 = mall.parkVehicle(Constants.CAR);
         Date ticket2Entry = ticket2.getEntryTime();
-        ticket2.setExitTime(new Date(ticket2Entry.getTime() + 6 * Parking.Constants.HOUR + Parking.Constants.MIN));
+        ticket2.setExitTime(new Date(ticket2Entry.getTime() + 6 * Constants.HOUR + Constants.MIN));
         mall.exitVehicle(ticket2.getTickerNr());
         assertEquals(140, ticket2.getFee());
 
-        Ticket ticket3 = mall.parkVehicle(Parking.Constants.BUS);
+        Ticket ticket3 = mall.parkVehicle(Constants.BUS);
         Date ticket3Entry = ticket3.getEntryTime();
-        ticket3.setExitTime(new Date(ticket3Entry.getTime() + Parking.Constants.HOUR + 59 * Parking.Constants.MIN));
+        ticket3.setExitTime(new Date(ticket3Entry.getTime() + Constants.HOUR + 59 * Constants.MIN));
         mall.exitVehicle(ticket3.getTickerNr());
         assertEquals(100, ticket3.getFee());
     }

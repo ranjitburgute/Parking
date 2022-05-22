@@ -1,6 +1,7 @@
 package com.example.parking;
 
-import com.example.ticket.Ticket;
+import com.example.resource.Spot;
+import com.example.resource.Ticket;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,90 +12,65 @@ public abstract class Parking {
 
     protected int ticketNr = 1;
     protected int receiptNr = 1;
-    protected int nextSpotBike;
-    protected int nextSpotCar;
-    protected int nextSpotBus;
-    protected int totalSpotsBike;
-    protected int totalSpotsCar;
-    protected int totalSpotsBus;
-    protected Map<Integer, Ticket> parkingTickets = new HashMap<>();
+
+    protected Map<String, Spot> availableSpots = new HashMap<>();
+    protected Map<Integer, Ticket> tickets = new HashMap<>();
 
     public abstract boolean isVehicleAllowed(String vehicleType);
 
-    public abstract long getFee(String vehicleType, long time);
+    public abstract long calculateFee(String vehicleType, long time);
 
     public Ticket parkVehicle(String vehicleType) {
-        System.out.println();
         if (!isVehicleAllowed(vehicleType)) {
             System.out.println(vehicleType + " is not supported in this parking");
             return null;
         }
-        if (nextSpotBike < totalSpotsBike) {
-            nextSpotBike++;
-            System.out.print("ENTRY | SpotNr:" + nextSpotBike);
-        } else if (nextSpotCar < totalSpotsCar) {
-            nextSpotCar++;
-            System.out.print("ENTRY | SpotNr:" + nextSpotCar);
-        } else if (nextSpotBus < totalSpotsBus) {
-            nextSpotBus++;
-            System.out.print("ENTRY | SpotNr:" + nextSpotBus);
-        } else {
-            System.out.print("No Parking spot available for " + vehicleType);
-            return null;
+        int nextSpot = reserveSpot(vehicleType);
+        Ticket ticket = null;
+        if (nextSpot != -1) {
+            Date entryTime = new Date();
+            ticket = new Ticket(ticketNr, nextSpot, entryTime, vehicleType);
+            tickets.put(ticketNr, ticket);
+            ticketNr++;
+            System.out.println(ticket.printTicket());
         }
-
-        Date entryTime = new Date();
-        Ticket parkingTicket = new Ticket(ticketNr, nextSpotBike, entryTime, vehicleType);
-        parkingTickets.put(ticketNr, parkingTicket);
-
-        System.out.print(" | ticketNr:" + ticketNr
-                + " | entry time:" + entryTime);
-
-        ticketNr++;
-
-        return parkingTicket;
+        return ticket;
     }
 
     public Ticket exitVehicle(int ticketNr) {
         Ticket ticket = null;
-        if (parkingTickets.containsKey(ticketNr)) {
-            ticket = parkingTickets.get(ticketNr);
+        if (tickets.containsKey(ticketNr)) {
+
+            ticket = tickets.get(ticketNr);
             String vehicleType = ticket.getVehicleType();
             Date entryTime = ticket.getEntryTime();
             Date exitTime = ticket.getExitTime();
 
             long time = TimeUnit.MILLISECONDS.convert(Math.abs(entryTime.getTime() - exitTime.getTime()), TimeUnit.MILLISECONDS);
+            long fee = calculateFee(vehicleType, time);
 
-            long fee = getFee(vehicleType, time);
             ticket.setFee(fee);
-            System.out.println();
-            System.out.print("EXIT | ticketNr:" + "R-" + receiptNr
-                    + " | spotNr:" + ticket.getSpotNr()
-                    + " | fee:" + fee);
-
+            ticket.setReceiptNr(receiptNr);
+            System.out.println(ticket.printReceipt());
             receiptNr++;
-            if (Constants.BIKE.equalsIgnoreCase(vehicleType)) {
-                nextSpotBike--;
-            } else if (Constants.CAR.equalsIgnoreCase(vehicleType)) {
-                nextSpotCar--;
-            } else if (Constants.BUS.equalsIgnoreCase(vehicleType)) {
-                nextSpotBus--;
-            }
 
-            System.out.print(" | entry time:" + entryTime
-                    + " | exit time:" + exitTime);
+            freeSpot(vehicleType);
         }
         return ticket;
     }
 
-    public static class Constants {
+    private int reserveSpot(String vehicleType) {
+        Spot spot = availableSpots.get(vehicleType);
+        int nextSpot = spot.getNextSpotNr();
+        spot.setCurrentSpotNr(nextSpot);
+        availableSpots.put(vehicleType, spot);
+        return nextSpot;
+    }
 
-        public static final String CAR = "car";
-        public static final String BIKE = "bike";
-        public static final String BUS = "bus";
-
-        public static final long MIN = 60 * 1000L;
-        public static final long HOUR = 60 * MIN;
-        public static final long DAY = 24 * HOUR;
+    private void freeSpot(String vehicleType) {
+        Spot spot = availableSpots.get(vehicleType);
+        int spotNr = spot.freeSpotNr();
+        spot.setCurrentSpotNr(spotNr);
+        availableSpots.put(vehicleType, spot);
     }
 }

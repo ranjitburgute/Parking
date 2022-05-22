@@ -1,11 +1,14 @@
 package com.example.parking;
 
+import com.example.resource.Spot;
+import com.example.utils.Constants;
+
 public class Stadium extends Parking {
 
-    public Stadium(int totalSpotsBike, int totalSpotsCar, int totalSpotsBus) {
-        this.totalSpotsBike = totalSpotsBike;
-        this.totalSpotsCar = totalSpotsCar;
-        this.totalSpotsBus = totalSpotsBus;
+    public Stadium(int totalSpotsBike, int totalSpotsCar) {
+
+        availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
+        availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
     }
 
     @Override
@@ -15,7 +18,7 @@ public class Stadium extends Parking {
     }
 
     @Override
-    public long getFee(String vehicleType, long time) {
+    public long calculateFee(String vehicleType, long time) {
         long fee = 0;
         if (Constants.BIKE.equalsIgnoreCase(vehicleType)) {
             fee = getBikeFee(time);

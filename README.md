@@ -1,11 +1,11 @@
 # Parking Ticket Application
 
-## Clone source code and import into Intellij
+## Import code into Intellij IDEA
 
-- git clone https://github.com/ranjitburgute/Parking.git
-- import source code into intellij idea
+- unzip and import project into intellij idea
+- gradle wrapper will automatically download the required dependencies.
 
-## Building and running Junit testcases
+## Building and running JUnit testcases
 
 - ./gradlew build
 
