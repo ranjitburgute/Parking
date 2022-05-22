@@ -9,12 +9,12 @@ public class Stadium extends Parking {
 
         availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
         availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
+        addSupportedVehicle();
     }
 
-    @Override
-    public boolean isVehicleAllowed(String vehicle) {
-        String supported = Constants.BIKE + Constants.CAR;
-        return supported.contains(vehicle);
+    public void addSupportedVehicle() {
+        supportedVehicle.add(Constants.BIKE);
+        supportedVehicle.add(Constants.CAR);
     }
 
     @Override

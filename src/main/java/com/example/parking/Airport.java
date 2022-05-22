@@ -8,25 +8,26 @@ public class Airport extends Parking {
     public Airport(int totalSpotsBike, int totalSpotsCar) {
         availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
         availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
+        addSupportedVehicle();
     }
 
-    public boolean isVehicleAllowed(String vehicle) {
-        String supported = Constants.BIKE + Constants.CAR;
-        return supported.contains(vehicle);
+    public void addSupportedVehicle() {
+        supportedVehicle.add(Constants.BIKE);
+        supportedVehicle.add(Constants.CAR);
     }
 
     @Override
     public long calculateFee(String vehicleType, long time) {
         long fee = 0;
         if (Constants.BIKE.equalsIgnoreCase(vehicleType)) {
-            fee = getBikeFee(time);
+            fee = calculateBikeFee(time);
         } else if (Constants.CAR.equalsIgnoreCase(vehicleType)) {
-            fee = getCarFee(time);
+            fee = calculateCarFee(time);
         }
         return fee;
     }
 
-    public int getBikeFee(long time) {
+    public int calculateBikeFee(long time) {
         int fee = 0;
         while (time > 0) {
             if (time > Constants.DAY) {
@@ -49,7 +50,7 @@ public class Airport extends Parking {
         return fee;
     }
 
-    public long getCarFee(long time) {
+    public long calculateCarFee(long time) {
         long fee = 0;
         while (time > 0) {
             if (time > Constants.DAY) {

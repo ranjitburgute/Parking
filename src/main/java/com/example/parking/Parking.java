@@ -3,9 +3,7 @@ package com.example.parking;
 import com.example.resource.Spot;
 import com.example.resource.Ticket;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Parking {
@@ -15,8 +13,14 @@ public abstract class Parking {
 
     protected Map<String, Spot> availableSpots = new HashMap<>();
     protected Map<Integer, Ticket> tickets = new HashMap<>();
+    protected List<String> supportedVehicle = new ArrayList<>();
 
-    public abstract boolean isVehicleAllowed(String vehicleType);
+    public boolean isVehicleAllowed(String vehicleType) {
+        if (supportedVehicle != null && supportedVehicle.size() > 0) {
+            return supportedVehicle.contains(vehicleType);
+        }
+        return false;
+    }
 
     public abstract long calculateFee(String vehicleType, long time);
 
@@ -54,22 +58,24 @@ public abstract class Parking {
             System.out.println(ticket.printReceipt());
             receiptNr++;
 
-            freeSpot(vehicleType);
+            removeSpot(vehicleType);
         }
         return ticket;
     }
 
     private int reserveSpot(String vehicleType) {
         Spot spot = availableSpots.get(vehicleType);
-        int nextSpot = spot.getNextSpotNr();
-        spot.setCurrentSpotNr(nextSpot);
-        availableSpots.put(vehicleType, spot);
+        int nextSpot = spot.getNextSpot();
+        if (nextSpot != -1) {
+            spot.setCurrentSpotNr(nextSpot);
+            availableSpots.put(vehicleType, spot);
+        }
         return nextSpot;
     }
 
-    private void freeSpot(String vehicleType) {
+    private void removeSpot(String vehicleType) {
         Spot spot = availableSpots.get(vehicleType);
-        int spotNr = spot.freeSpotNr();
+        int spotNr = spot.removeSpot();
         spot.setCurrentSpotNr(spotNr);
         availableSpots.put(vehicleType, spot);
     }

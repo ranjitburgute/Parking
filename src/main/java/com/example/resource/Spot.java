@@ -9,18 +9,18 @@ public class Spot {
         this.totalSpots = totalSpots;
     }
 
-    public int getNextSpotNr() {
+    public int getNextSpot() {
         if (currentSpotNr < totalSpots) {
             currentSpotNr++;
         } else {
-            System.out.println("No Parking spot available...");
+            System.out.println("No parking space available...");
             return -1;
         }
         return currentSpotNr;
     }
 
-    public int freeSpotNr() {
-        if (currentSpotNr > 0) {
+    public int removeSpot() {
+        if (currentSpotNr > 1) {
             currentSpotNr--;
         }
         return currentSpotNr;
