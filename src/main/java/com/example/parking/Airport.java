@@ -1,17 +1,14 @@
 package com.example.parking;
 
-import com.example.resource.Spot;
+import com.example.resource.Spots;
 import com.example.utils.Constants;
 
 public class Airport extends Parking {
 
     public Airport(int totalSpotsBike, int totalSpotsCar) {
-        availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
-        availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
-        addSupportedVehicle();
-    }
+        spots.put(Constants.BIKE, new Spots(totalSpotsBike));
+        spots.put(Constants.CAR, new Spots(totalSpotsCar));
 
-    public void addSupportedVehicle() {
         supportedVehicle.add(Constants.BIKE);
         supportedVehicle.add(Constants.CAR);
     }

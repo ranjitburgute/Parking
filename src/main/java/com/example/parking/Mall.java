@@ -1,19 +1,15 @@
 package com.example.parking;
 
-import com.example.resource.Spot;
+import com.example.resource.Spots;
 import com.example.utils.Constants;
 
 public class Mall extends Parking {
 
     public Mall(int totalSpotsBike, int totalSpotsCar, int totalSpotsBus) {
+        spots.put(Constants.BIKE, new Spots(totalSpotsBike));
+        spots.put(Constants.CAR, new Spots(totalSpotsCar));
+        spots.put(Constants.BUS, new Spots(totalSpotsBus));
 
-        availableSpots.put(Constants.BIKE, new Spot(totalSpotsBike));
-        availableSpots.put(Constants.CAR, new Spot(totalSpotsCar));
-        availableSpots.put(Constants.BUS, new Spot(totalSpotsBus));
-        addSupportedVehicle();
-    }
-
-    public void addSupportedVehicle() {
         supportedVehicle.add(Constants.BIKE);
         supportedVehicle.add(Constants.CAR);
         supportedVehicle.add(Constants.BUS);

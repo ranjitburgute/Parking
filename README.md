@@ -8,6 +8,7 @@
 ## Building and running JUnit testcases
 
 - ./gradlew build
+- ./gradlew test
 
 ## JUnit results
 

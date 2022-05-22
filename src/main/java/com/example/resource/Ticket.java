@@ -19,6 +19,10 @@ public class Ticket {
         this.vehicleType = vehicleType;
     }
 
+    public int getSpotNr() {
+        return spotNr;
+    }
+
     public void setReceiptNr(int receiptNr) {
         this.receiptNr = receiptNr;
     }
@@ -26,8 +30,7 @@ public class Ticket {
     public String printTicket() {
         return "Ticket{" +
                 "tickerNr=" + tickerNr +
-                ", vehicleType='" + vehicleType + '\'' +
-                ", spotNr=" + spotNr +
+                ", spotNr='" + vehicleType + "-" + spotNr + "'" +
                 ", entryTime=" + entryTime +
                 '}';
     }
@@ -35,7 +38,7 @@ public class Ticket {
     public String printReceipt() {
         return "Receipt{" +
                 "receiptNr=R-" + receiptNr +
-                ", vehicleType='" + vehicleType + '\'' +
+                ", spotNr='" + vehicleType + "-" + spotNr + "'" +
                 ", fee=" + fee +
                 ", entryTime=" + entryTime +
                 ", exitTime=" + exitTime +
