@@ -5,6 +5,14 @@ import com.example.utils.Constants;
 
 public class Stadium extends Parking {
 
+    public static final int BIKE_FEE_PER_00_04_HOUR = 30;
+    public static final int BIKE_FEE_PER_04_12_HOUR = 60;
+    public static final int BIKE_FEE_PER_12_N_HOUR = 100;
+
+    public static final int CAR_FEE_PER_00_04_HOUR = 60;
+    public static final int CAR_FEE_PER_04_12_HOUR = 120;
+    public static final int CAR_FEE_PER_12_N_HOUR = 200;
+
     public Stadium(int totalSpotsBike, int totalSpotsCar) {
 
         spots.put(Constants.BIKE, new Spots(totalSpotsBike));
@@ -25,42 +33,50 @@ public class Stadium extends Parking {
         return fee;
     }
 
+    /**
+     * Flat rate up to a few hours and then per-hour rate.
+     * The total fee is the sum of all the previous interval fees
+     */
     public long calculateBikeFee(long time) {
         long fee = 0;
         while (time > 0) {
             if (time > 12 * Constants.HOUR) {
                 long moreThan12Hrs = time - 12 * Constants.HOUR;
-                fee += moreThan12Hrs / Constants.HOUR * 100;
+                fee += moreThan12Hrs / Constants.HOUR * BIKE_FEE_PER_12_N_HOUR;
                 if (moreThan12Hrs % Constants.HOUR > 0) {
-                    fee += 100;
+                    fee += BIKE_FEE_PER_12_N_HOUR;
                 }
                 time = 12 * Constants.HOUR;
             } else if (time < 12 * Constants.HOUR && time > 4 * Constants.HOUR) {
-                fee += 60;
-                time -= 8 * Constants.HOUR;
+                fee += BIKE_FEE_PER_04_12_HOUR;
+                time -= (12 - 4) * Constants.HOUR;
             } else {
-                fee += 30;
+                fee += BIKE_FEE_PER_00_04_HOUR;
                 time -= 4 * Constants.HOUR;
             }
         }
         return fee;
     }
 
+    /**
+     * Flat rate up to a few hours and then per-hour rate.
+     * The total fee is the sum of all the previous interval fees
+     */
     public long calculateCarFee(long time) {
         long fee = 0;
         while (time > 0) {
             if (time > 12 * Constants.HOUR) {
                 long moreThan12Hrs = time - 12 * Constants.HOUR;
-                fee += moreThan12Hrs / Constants.HOUR * 200;
+                fee += moreThan12Hrs / Constants.HOUR * CAR_FEE_PER_12_N_HOUR;
                 if (moreThan12Hrs % Constants.HOUR > 0) {
-                    fee += 200;
+                    fee += CAR_FEE_PER_12_N_HOUR;
                 }
                 time = 12 * Constants.HOUR;
             } else if (time < 12 * Constants.HOUR && time > 4 * Constants.HOUR) {
-                fee += 120;
-                time -= 8 * Constants.HOUR;
+                fee += CAR_FEE_PER_04_12_HOUR;
+                time -= (12 - 4) * Constants.HOUR;
             } else {
-                fee += 60;
+                fee += CAR_FEE_PER_00_04_HOUR;
                 time -= 4 * Constants.HOUR;
             }
         }

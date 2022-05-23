@@ -12,4 +12,5 @@
 
 ## JUnit results
 
-- test results will be generated at location build/reports/tests/test/index.html
+- junit test reports will be generated at location build/reports/tests/test/index.html
+- code coverage will be generated at location build/reports/jacoco/test/html/index.html

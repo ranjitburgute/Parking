@@ -5,6 +5,14 @@ import com.example.utils.Constants;
 
 public class Airport extends Parking {
 
+    public static final int BIKE_FEE_PER_01_08_HOUR = 40;
+    public static final int BIKE_FEE_PER_08_24_HOUR = 60;
+    public static final int BIKE_FEE_MORE_THAN_DAY = 80;
+
+    public static final int CAR_FEE_PER_00_12_HOUR = 60;
+    public static final int CAR_FEE_PER_12_24_HOUR = 80;
+    public static final int CAR_FEE_MORE_THAN_DAY = 100;
+
     public Airport(int totalSpotsBike, int totalSpotsCar) {
         spots.put(Constants.BIKE, new Spots(totalSpotsBike));
         spots.put(Constants.CAR, new Spots(totalSpotsCar));
@@ -24,21 +32,25 @@ public class Airport extends Parking {
         return fee;
     }
 
+    /**
+     * Flat rate up to one day. Then per-day rate.
+     * There is no summing up of the previous interval fees.
+     */
     public int calculateBikeFee(long time) {
         int fee = 0;
         while (time > 0) {
             if (time > Constants.DAY) {
                 long days = time / Constants.DAY;
-                fee += 80 * days;
+                fee += BIKE_FEE_MORE_THAN_DAY * days;
                 if (time % Constants.DAY > 0) {
-                    fee += 80;
+                    fee += BIKE_FEE_MORE_THAN_DAY;
                 }
                 return fee;
             } else if (time > 8 * Constants.HOUR && time < 24 * Constants.HOUR) {
-                fee += 60;
-                time -= 16 * Constants.HOUR;
+                fee += BIKE_FEE_PER_08_24_HOUR;
+                time -= 24 * Constants.HOUR;
             } else if (time > Constants.HOUR && time < 8 * Constants.HOUR) {
-                fee += 40;
+                fee += BIKE_FEE_PER_01_08_HOUR;
                 time -= 8 * Constants.HOUR;
             } else if (time < Constants.HOUR) {
                 time -= Constants.HOUR;
@@ -47,22 +59,25 @@ public class Airport extends Parking {
         return fee;
     }
 
+    /**
+     * Flat rate up to one day. Then per-day rate.
+     * There is no summing up of the previous interval fees.
+     */
     public long calculateCarFee(long time) {
         long fee = 0;
         while (time > 0) {
             if (time > Constants.DAY) {
                 long days = time / Constants.DAY;
-                fee += 100 * days;
+                fee += CAR_FEE_MORE_THAN_DAY * days;
                 if (time % Constants.DAY > 0) {
-                    fee += 100;
+                    fee += CAR_FEE_MORE_THAN_DAY;
                 }
                 return fee;
-
             } else if (time > 12 * Constants.HOUR && time < 24 * Constants.HOUR) {
-                fee += 80;
+                fee += CAR_FEE_PER_12_24_HOUR;
                 time -= 24 * Constants.HOUR;
             } else if (time < 12 * Constants.HOUR) {
-                fee += 60;
+                fee += CAR_FEE_PER_00_12_HOUR;
                 time -= 12 * Constants.HOUR;
             }
         }

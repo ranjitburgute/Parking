@@ -3,7 +3,12 @@ package com.example.parking;
 import com.example.resource.Spots;
 import com.example.utils.Constants;
 
+
 public class Mall extends Parking {
+
+    public static final int BIKE_FEE_PER_HOUR = 10;
+    public static final int CAR_FEE_PER_HOUR = 20;
+    public static final int BUS_FEE_PER_HOUR = 50;
 
     public Mall(int totalSpotsBike, int totalSpotsCar, int totalSpotsBus) {
         spots.put(Constants.BIKE, new Spots(totalSpotsBike));
@@ -15,17 +20,24 @@ public class Mall extends Parking {
         supportedVehicle.add(Constants.BUS);
     }
 
+    /**
+     * Per-hour flat fees
+     *
+     * @param vehicleType
+     * @param time
+     * @return
+     */
     public long calculateFee(String vehicleType, long time) {
         int rate = 0;
         long fee = 0;
         if (Constants.BIKE.equalsIgnoreCase(vehicleType)) {
-            rate = 10;
+            rate = BIKE_FEE_PER_HOUR;
         }
         if (Constants.CAR.equalsIgnoreCase(vehicleType)) {
-            rate = 20;
+            rate = CAR_FEE_PER_HOUR;
         }
         if (Constants.BUS.equalsIgnoreCase(vehicleType)) {
-            rate = 50;
+            rate = BUS_FEE_PER_HOUR;
         }
         if (time < Constants.HOUR || time % Constants.HOUR > 0) {
             fee += rate;
